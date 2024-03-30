@@ -32,14 +32,16 @@ export class PsqlCursor extends BeeCursor {
 
 
   async start() {
+    console.log('in start')
     this.client = await this.options.conn.pool.connect()
     this.client.on('error', this.handleError.bind(this))
     const { query, params } = this.options
-    this.cursor = this.client.query(new Cursor(query, params, {rowMode: 'array'}))
+    // this.cursor = this.client.query(new Cursor(query, params, {rowMode: 'array'}))
+    this.cursor = this.client.query(new Cursor(query, params))
   }
 
   read(): Promise<any[][]> {
-
+    console.log('in read')
     return new Promise((resolve, reject) => {
       if (this.error) return reject(this.error)
       if (!this.client || !this.cursor) {
@@ -49,6 +51,8 @@ export class PsqlCursor extends BeeCursor {
           if (err) {
             reject(err.message)
           } else {
+            // console.log('&&& I am in here now &&&')
+            // console.log(rows)
             resolve(rows)
           }
         })

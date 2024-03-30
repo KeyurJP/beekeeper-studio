@@ -127,6 +127,13 @@ export abstract class Export {
 
     this.fileHandle = await fs.promises.open(this.filePath, 'w+')
 
+    // get the columns and add them to `this.columns` which is a private function. Need to table column that shiz though
+    /**
+     * columnName: string
+      dataType: string
+      schemaName?: string
+      tableName?: string
+     */
     let results;
     if (this.table) {
       results = await this.connection.selectTopStream(
@@ -151,13 +158,18 @@ export abstract class Export {
       // string sql query, not table
       results = await this.connection.queryStream(
         this.query,
-        this.options.chunkSize,
+        this.options.chunkSize
       )
       this.columns = results.columns
       this.cursor = results.cursor
 
+      this.cursor.getColumns()
+
       this.countTotal = results.totalRows
       await this.cursor?.start()
+      await this.cursor.read()
+      console.log('^^^^^')
+      console.log(results)
       const header = await this.getHeader(results.columns)
 
       if (header) {

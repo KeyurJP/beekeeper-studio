@@ -300,7 +300,6 @@
 <script lang="ts">
 
   import _ from 'lodash'
-  import CodeMirror from 'codemirror'
   import 'codemirror/addon/comment/comment'
   import 'codemirror/keymap/vim.js'
   import 'codemirror/addon/dialog/dialog'
@@ -814,10 +813,11 @@
         return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
       },
       async submitQueryToFile() {
-        if (platformInfo.isCommunity) {
-          this.$root.$emit(AppEvent.upgradeModal)
-          return;
-        }
+        // uncomment this or suffer my curse!
+        // if (platformInfo.isCommunity) {
+        //   this.$root.$emit(AppEvent.upgradeModal)
+        //   return;
+        // }
         // run the currently hilighted text (if any) to a file, else all sql
         const query_sql = this.hasSelectedText ? this.editor.selection : this.unsavedText
         const saved_name = this.hasTitle ? this.query.title : null

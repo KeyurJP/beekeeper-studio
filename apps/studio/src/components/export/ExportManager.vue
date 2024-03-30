@@ -28,7 +28,6 @@ import ExportModal from './ExportModal.vue'
 import { CsvExporter, JsonExporter, JsonLineExporter, SqlExporter } from '../../lib/export'
 import { ExportProgress, ExportStatus } from '../../lib/export/models'
 import globals from '@/common/globals'
-import { BasicDatabaseClient } from '@/lib/db/clients/BasicDatabaseClient'
 
 interface ExportTriggerOptions {
   table?: TableOrView,
@@ -76,6 +75,7 @@ export default Vue.extend({
   computed: {
     ...mapGetters({ 'exports': 'exports/runningExports' }),
     rootBindings(): RootBinding[] {
+      console.log('in a root binding probably idfk')
       return [
         { event: AppEvent.beginExport, handler: this.handleExportRequest },
       ]
