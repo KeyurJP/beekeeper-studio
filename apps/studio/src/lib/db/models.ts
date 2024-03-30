@@ -8,10 +8,6 @@ export abstract class BeeCursor {
   abstract read(): Promise<any[][]>
   abstract cancel(): Promise<void>
   
-  getColumns() {
-    return
-  }
-
   async close() {
     await this.cancel()
   }

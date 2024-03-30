@@ -11,7 +11,7 @@ declare module 'pg-cursor' {
      * By default rows come out as a Record<string,any>.
      * Pass the string 'array' here to receive each row as an array of values.
      */
-    rowMode?: string;
+    rowMode?: "array";
 
     /**
      * Custom type parsers for just this query result.

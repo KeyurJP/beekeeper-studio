@@ -547,7 +547,6 @@ export class PostgresClient extends BasicDatabaseClient<QueryResult> {
     let pid: any = null;
     let canceling = false;
     const cancelable = createCancelablePromise(errors.CANCELED_BY_USER);
-    console.log('in execute of query')
 
     return {
       execute: async (): Promise<NgQueryResult[]> => {
@@ -858,7 +857,6 @@ export class PostgresClient extends BasicDatabaseClient<QueryResult> {
   async selectTop(table: string, offset: number, limit: number, orderBy: OrderBy[], filters: string | TableFilter[], schema: string = this._defaultSchema, selects?: string[]): Promise<TableResult> {
     const qs = await this._selectTopSql(table, offset, limit, orderBy, filters, schema, selects)
     const result = await this.driverExecuteSingle(qs.query, { params: qs.params })
-    console.log('in here too?')
     return {
       result: result.rows,
       fields: result.fields.map(f => f.name)
@@ -895,7 +893,13 @@ export class PostgresClient extends BasicDatabaseClient<QueryResult> {
   }
 
   async queryStream(query: string, chunkSize: number): Promise<StreamResults> {
-    console.log('in that queryStream, son!')
+    const [result] = await this.executeQuery(query)
+    const {fields, rowCount: totalRows} = result
+    const columns = fields.map(f => ({
+      columnName: f.name,
+      dataType: f.dataType
+    }))
+
     const cursorOpts = {
       query: query,
       params: [],
@@ -904,8 +908,8 @@ export class PostgresClient extends BasicDatabaseClient<QueryResult> {
     }
 
     return {
-      totalRows: undefined, // totalRecords,
-      columns: undefined, // columns,
+      totalRows,
+      columns,
       cursor: new PsqlCursor(cursorOpts)
     }
   }

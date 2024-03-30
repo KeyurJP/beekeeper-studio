@@ -163,14 +163,9 @@ export abstract class Export {
       this.columns = results.columns
       this.cursor = results.cursor
 
-      this.cursor.getColumns()
-
       this.countTotal = results.totalRows
       await this.cursor?.start()
-      await this.cursor.read()
-      console.log('^^^^^')
-      console.log(results)
-      const header = await this.getHeader(results.columns)
+      const header = await this.getHeader(this.columns)
 
       if (header) {
         await this.fileHandle.write(header)

@@ -42,8 +42,6 @@ export class CsvExporter extends Export {
   }
 
   async getHeader(columns: TableColumn[]): Promise<string> {
-    console.log('~~getHeader~~')
-    console.log(columns)
     if (!columns) return ""
     const fields = columns.map(c => c.columnName)
     if (fields.length > 0 && this.outputOptions.header) {

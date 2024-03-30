@@ -75,7 +75,6 @@ export default Vue.extend({
   computed: {
     ...mapGetters({ 'exports': 'exports/runningExports' }),
     rootBindings(): RootBinding[] {
-      console.log('in a root binding probably idfk')
       return [
         { event: AppEvent.beginExport, handler: this.handleExportRequest },
       ]
