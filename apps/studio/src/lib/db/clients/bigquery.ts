@@ -431,9 +431,11 @@ export class BigQueryClient extends BasicDatabaseClient<BigQueryResult> {
     const theCursor = new BigQueryCursor(this.client, query, [], chunkSize);
     log.debug('results', theCursor);
 
+    const { columns, totalRows } = await this.getColumnsAndTotalRows(query)
+
     return {
-      totalRows: undefined, // rowCount,
-      columns: undefined, // theCursor.result.columns,
+      totalRows,
+      columns,
       cursor: theCursor
     };
   }

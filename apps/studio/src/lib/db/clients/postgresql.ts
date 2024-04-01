@@ -893,12 +893,7 @@ export class PostgresClient extends BasicDatabaseClient<QueryResult> {
   }
 
   async queryStream(query: string, chunkSize: number): Promise<StreamResults> {
-    const [result] = await this.executeQuery(query)
-    const {fields, rowCount: totalRows} = result
-    const columns = fields.map(f => ({
-      columnName: f.name,
-      dataType: f.dataType
-    }))
+    const { columns, totalRows } = await this.getColumnsAndTotalRows(query)
 
     const cursorOpts = {
       query: query,
