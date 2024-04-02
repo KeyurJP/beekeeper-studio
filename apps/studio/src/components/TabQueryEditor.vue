@@ -813,11 +813,10 @@
         return string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
       },
       async submitQueryToFile() {
-        // uncomment this or suffer my curse!
-        // if (platformInfo.isCommunity) {
-        //   this.$root.$emit(AppEvent.upgradeModal)
-        //   return;
-        // }
+        if (platformInfo.isCommunity) {
+          this.$root.$emit(AppEvent.upgradeModal)
+          return;
+        }
         // run the currently hilighted text (if any) to a file, else all sql
         const query_sql = this.hasSelectedText ? this.editor.selection : this.unsavedText
         const saved_name = this.hasTitle ? this.query.title : null
